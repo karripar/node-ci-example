@@ -9,8 +9,20 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env: 
-      DB_HOST: ${{ secrets.DB_HOST }}
+
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          PORT: ${{ secrets.PORT }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+        ports:
+          - 3306:3306
+
+    env:
+      DB_HOST: 127.0.0.1
       DB_USER: ${{ secrets.DB_USER }}
       DB_PASS: ${{ secrets.DB_PASS }}
       DB_NAME: ${{ secrets.DB_NAME }}
@@ -29,19 +41,15 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      - name: Start MySQL service
-        run: sudo service mysql start
-
       - name: Install dependencies
         run: npm ci
 
       - name: Build project
         run: npm run build --if-present
 
-      - name: Initialize database
+      - name: Initialize database schema
         run: |
-          mysql -h $DB_HOST -u $DB_USER -p$DB_PASS -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
-          mysql -h $DB_HOST -u $DB_USER -p$DB_PASS $DB_NAME < db/create-db.sql
+          mysql -h $DB_HOST -u$DB_USER -p$DB_PASS $DB_NAME < db/create-db.sql
 
       - name: Run tests
         run: npm test
