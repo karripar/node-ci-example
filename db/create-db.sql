@@ -20,3 +20,6 @@ ALTER TABLE `students`
 ALTER TABLE `students`
   MODIFY `student_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
+
+INSERT INTO `students` (`student_id`, `student_name`, `filename`, `birthdate`) VALUES
+(1, 'Matti Meikäläinen', 'matti.jpg', '1990-01-01');
