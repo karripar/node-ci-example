@@ -1,5 +1,4 @@
 import express from 'express';
-
 import studentRoute from './routes/studentRoute';
 import MessageResponse from '../interfaces/MessageResponse';
 
