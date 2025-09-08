@@ -1,10 +1,5 @@
 DROP DATABASE IF EXISTS cicdtest;
 CREATE DATABASE cicdtest;
-
-GRANT ALL PRIVILEGES ON cicdtest.* TO 'root'@'localhost' IDENTIFIED BY 'root';
-FLUSH PRIVILEGES;
-
-
 -- source c:/users/karri/webdev/palvelinohjelmointi/ci-cd/node-ci-example/db/create-db.sql;
 
 

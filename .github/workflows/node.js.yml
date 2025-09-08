@@ -10,27 +10,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:8
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: testdb
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping -h localhost -uroot -proot"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-
-    env:
-      DB_HOST: 127.0.0.1
-      DB_USER: root
-      DB_PASS: root
-      DB_NAME: testdb
-      PORT: 3000
-
     strategy:
       matrix:
         node-version: [18.x, 24.x]
@@ -49,26 +28,10 @@ jobs:
 
       - name: Build project
         run: npm run build --if-present
-
-      - name: Wait for MySQL to be ready
+      - name: Setup Mysql
         run: |
-          for i in {1..30}; do
-            if mysql -h $DB_HOST -u$DB_USER -p$DB_PASS -e "SELECT 1" $DB_NAME; then
-              echo "MySQL is up!"
-              break
-            fi
-            echo "Waiting for MySQL..."
-            sleep 2
-          done
-
-      - name: Initialize database schema
-        run: |
-          mysql -h $DB_HOST -u$DB_USER -p$DB_PASS $DB_NAME < db/create-db.sql
-
-      - name: Debug DB
-        run: |
-          echo "Tables in $DB_NAME:"
-          mysql -h $DB_HOST -u$DB_USER -p$DB_PASS -e "USE $DB_NAME; SHOW TABLES;"
-
+          sudo systemctl start mysql
+          cp .env.sample .env
+          mysql -u root -proot < db/create-db.sql 
       - name: Run tests
         run: npm test
