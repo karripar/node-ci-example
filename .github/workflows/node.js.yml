@@ -14,19 +14,22 @@ jobs:
       mysql:
         image: mysql:8
         env:
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-          PORT: ${{ secrets.PORT }}
-          DB_PASS: ${{ secrets.DB_PASS }}
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: testdb
         ports:
           - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -uroot -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
     env:
       DB_HOST: 127.0.0.1
-      DB_USER: ${{ secrets.DB_USER }}
-      DB_PASS: ${{ secrets.DB_PASS }}
-      DB_NAME: ${{ secrets.DB_NAME }}
-      PORT: ${{ secrets.PORT }}
+      DB_USER: root
+      DB_PASS: root
+      DB_NAME: testdb
+      PORT: 3000
 
     strategy:
       matrix:
