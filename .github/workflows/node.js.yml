@@ -50,6 +50,17 @@ jobs:
       - name: Build project
         run: npm run build --if-present
 
+      - name: Wait for MySQL to be ready
+        run: |
+          for i in {1..30}; do
+            if mysql -h $DB_HOST -u$DB_USER -p$DB_PASS -e "SELECT 1" $DB_NAME; then
+              echo "MySQL is up!"
+              break
+            fi
+            echo "Waiting for MySQL..."
+            sleep 2
+          done
+
       - name: Initialize database schema
         run: |
           mysql -h $DB_HOST -u$DB_USER -p$DB_PASS $DB_NAME < db/create-db.sql
