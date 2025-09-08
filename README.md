@@ -1,20 +1,30 @@
-# CI Github Action process
+# CI Github Action process (karripar)
 
+## Steps I Did
+1. **Generated SSH keys**  
+   - Created a new key pair on the server with `ssh-keygen`.  
+   - Added the public key to `~/.ssh/authorized_keys`.  
+   - Saved the private key as a GitHub secret (`PRIVATE_KEY`).  
 
+2. **Configured GitHub Actions**  
+   - Used `appleboy/ssh-action` to connect to the server.  
+   - Wrote a workflow (`deploy.yml`) to:
+     - `git pull` the latest code  
+     - run `npm install`  
+     - execute tests with `jest`  
+     - generate API docs with `apidoc`  
+     - restart the app using `pm2`  
 
+3. **Deployment Process**  
+   - On every push to `main`, GitHub connects to the server.  
+   - The workflow updates the code, installs dependencies, runs tests, and restarts the app.  
+   - Verified deployment by checking `pm2` logs and app output.
 
+The app now deploys automatically on pushes to `main`.
 
+![Deployment success](img/deploy-success.png)
 
-
-
-
-
-
-
-
-
-
-
+---
 
 # Simple Node CI/CD demo including integration testing
 
