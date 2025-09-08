@@ -1,7 +1,8 @@
 DROP DATABASE IF EXISTS cicdtest;
 CREATE DATABASE cicdtest;
--- source c:/users/karri/webdev/palvelinohjelmointi/ci-cd/node-ci-example/db/create-db.sql;
-
+CREATE USER 'myusername'@'localhost' IDENTIFIED BY 'mypassword';
+GRANT ALL PRIVILEGES ON `cicdtest`.* TO 'myusername'@'localhost';
+FLUSH PRIVILEGES;
 
 USE cicdtest;
 
