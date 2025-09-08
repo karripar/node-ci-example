@@ -1,3 +1,21 @@
+# CI Github Action process
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Simple Node CI/CD demo including integration testing
 
 Tests & code based on <https://github.com/ilkkamtk/integration-testing-ready>
