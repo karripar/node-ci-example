@@ -1,6 +1,9 @@
 DROP DATABASE IF EXISTS cicdtest;
 CREATE DATABASE cicdtest;
 
+GRANT ALL PRIVILEGES ON cicdtest.* TO 'root'@'localhost' IDENTIFIED BY 'root';
+FLUSH PRIVILEGES;
+
 
 -- source c:/users/karri/webdev/palvelinohjelmointi/ci-cd/node-ci-example/db/create-db.sql;
 
@@ -20,6 +23,3 @@ ALTER TABLE `students`
 ALTER TABLE `students`
   MODIFY `student_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
-
-INSERT INTO `students` (`student_id`, `student_name`, `filename`, `birthdate`) VALUES
-(1, 'Matti Meikäläinen', 'matti.jpg', '1990-01-01');
